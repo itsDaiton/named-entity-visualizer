@@ -10,7 +10,6 @@ def load_model(model):
 # Load English pre-trained models - https://spacy.io/models/en
 model_sm = load_model('en_core_web_sm')
 model_md = load_model('en_core_web_md')
-model_lg = load_model('en_core_web_lg')
 model_trf = load_model('en_core_web_trf')
 
 # Load labels and their colors - https://spacy.io/api/language#get_pipe
@@ -34,7 +33,7 @@ description = '<p style="font-size: 18px">NERV short for <span style="color: Ind
 st.sidebar.markdown(description, unsafe_allow_html=True)
 
 # Sidebar model selection
-model_options = {'en_core_web_sm': model_sm, 'en_core_web_md': model_md, 'en_core_web_lg': model_lg, 'en_core_web_trf': model_trf}
+model_options = {'en_core_web_sm': model_sm, 'en_core_web_md': model_md, 'en_core_web_trf': model_trf}
 st.session_state.current_model = st.sidebar.selectbox('Select a model', model_options.keys())
 
 # Sidebar model description

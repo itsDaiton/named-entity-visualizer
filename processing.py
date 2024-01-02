@@ -38,4 +38,12 @@ def get_entity_colors():
     'QUANTITY': 'RosyBrown',
     'TIME': 'DarkSeaGreen',
     'WORK_OF_ART': 'MidnightBlue',
+    'PER': 'Peru',
+    'MISC': 'Aqua',
+    'date': 'LightSalmon',
+    'geogName': 'Teal',
+    'orgName': 'IndianRed',
+    'persName': 'Peru',
+    'placeName': 'CadetBlue',
+    'time': 'DarkSeaGreen',
   }

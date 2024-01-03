@@ -1,5 +1,6 @@
 import streamlit as st
 import spacy
+import pandas as pd
 from processing import process_text, render_entities, get_default_input, get_entity_colors
 
 # Load models only when necessary - https://docs.streamlit.io/library/advanced-features/caching
@@ -60,15 +61,15 @@ model_info = f'<p style="font-size: 16px"><b>{st.session_state.current_model}:</
 st.sidebar.markdown(model_info, unsafe_allow_html=True)
 
 # Named entities selection
-st.sidebar.title('Named Entities')
+st.sidebar.title('Named Entity Labels')
 container = st.sidebar.container()
-all = st.sidebar.checkbox('Select all entities', value=True)
+all = st.sidebar.checkbox('Select all labels', value=True)
 
 # Select all entities by default, else select only the ones that are already selected
 if all:
-  st.session_state.selected_options = container.multiselect('Select entities to display', entity_labels[st.session_state.current_model], default=entity_labels[st.session_state.current_model])
+  st.session_state.selected_options = container.multiselect('Select entity labels to display', entity_labels[st.session_state.current_model], default=entity_labels[st.session_state.current_model])
 else: 
-  st.session_state.selected_options = container.multiselect('Select entities to display', entity_labels[st.session_state.current_model])
+  st.session_state.selected_options = container.multiselect('Select entity labels to display', entity_labels[st.session_state.current_model])
 
 # Set different colors for each entity
 for label, color in entity_colors.items():
@@ -82,10 +83,38 @@ for label, color in entity_colors.items():
     """, unsafe_allow_html=True)
   
 # Input text to analyze
+st.header('Input text')
 input_text = st.text_area('Text to analyze', get_default_input(), height=250)
 doc = process_text(input_text, st.session_state.current_model)
 
 # Named Entities - https://spacy.io/usage/visualizers
 st.header('Named Entities')
-ent_html = render_entities(doc, st.session_state.selected_options)
-st.markdown(ent_html, unsafe_allow_html=True)
+with st.container(border=False):
+  ent_html = render_entities(doc, st.session_state.selected_options)
+  st.markdown(ent_html, unsafe_allow_html=True)
+
+# Table of entities
+st.header('Extracted entities')
+table_data = []
+
+# Create a dataframe of entities
+for ent in doc.ents:
+  structure = {
+    'Entity': ent.text,
+    'Label': ent.label_,
+    'ID': ent._.kb_qid if hasattr(ent._, 'kb_qid') else 'NaN',
+    'Wikidata URL': ent._.url_wikidata if hasattr(ent._, 'url_wikidata') else 'NaN'
+  }
+  table_data.append(structure)
+df = pd.DataFrame(table_data)
+
+# Container for table
+with st.container(border=False):
+  st.data_editor(
+    df,
+    column_config={
+      'Wikidata URL': st.column_config.LinkColumn(),
+    },
+    hide_index=True,
+    use_container_width=True,
+  )

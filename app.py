@@ -1,6 +1,7 @@
 import streamlit as st
 import spacy
 import pandas as pd
+import matplotlib.pyplot as plt
 from processing import process_text, render_entities, get_default_input, get_entity_colors
 
 # Load models only when necessary - https://docs.streamlit.io/library/advanced-features/caching
@@ -118,3 +119,22 @@ with st.container(border=False):
     hide_index=True,
     use_container_width=True,
   )
+
+# Get unique labels and their colors  
+unique_labels = df['Label'].unique()
+label_colors = [get_entity_colors().get(label, 'gray') for label in unique_labels]
+label_dict = dict(zip(unique_labels, label_colors))
+
+# Entity label distribution graph
+st.header('Entity Label Distribution')
+with st.container(border=False):
+  fig, ax = plt.subplots()
+  counts = df['Label'].value_counts()
+  # Plot all entity labels and their counts
+  counts.plot(kind='bar', color=[label_dict[label] for label in counts.index])
+  ax.set_xlabel('Entity Label')
+  ax.set_ylabel('Count')
+  plt.xticks(rotation=45, ha='right')
+  # Set y-axis ticks to natural numbers
+  ax.set_yticks(range(int(counts.max()) + 1))
+  st.pyplot(fig)

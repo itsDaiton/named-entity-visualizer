@@ -100,13 +100,14 @@ table_data = []
 
 # Create a dataframe of entities
 for ent in doc.ents:
-  structure = {
-    'Entity': ent.text,
-    'Label': ent.label_,
-    'ID': ent._.kb_qid if hasattr(ent._, 'kb_qid') else 'NaN',
-    'Wikidata URL': ent._.url_wikidata if hasattr(ent._, 'url_wikidata') else 'NaN'
-  }
-  table_data.append(structure)
+  if ent.label_ in st.session_state.selected_options:
+    structure = {
+      'Entity': ent.text,
+      'Label': ent.label_,
+      'ID': ent._.kb_qid if hasattr(ent._, 'kb_qid') else 'NaN',
+      'Wikidata URL': ent._.url_wikidata if hasattr(ent._, 'url_wikidata') else 'NaN'
+    }
+    table_data.append(structure)
 df = pd.DataFrame(table_data)
 
 # Container for table

@@ -25,6 +25,7 @@ entity_labels = {
     'es_core_news_sm': model_es.get_pipe('ner').labels,
 }
 
+# Load entity colors
 entity_colors = get_entity_colors()
 
 # Set default model to session state - https://docs.streamlit.io/library/api-reference/session-state
@@ -64,7 +65,7 @@ st.sidebar.markdown(model_info, unsafe_allow_html=True)
 # Named entities selection
 st.sidebar.title('Named Entity Labels')
 container = st.sidebar.container()
-all = st.sidebar.checkbox('Select all labels', value=True)
+all = st.sidebar.toggle('Select all labels', value=True)
 
 # Select all entities by default, else select only the ones that are already selected
 if all:
@@ -90,7 +91,7 @@ if not input_text.strip():
   st.warning('Please enter some text to analyze.', icon="⚠️")
 
 # Named Entities - https://spacy.io/usage/visualizers
-st.header('Named Entities')
+st.header('Named Entities Visualization')
 with st.container(border=False):
   if not input_text.strip():
     st.error('Named entities cannot be extracted from empty text!', icon='❌')
@@ -98,6 +99,10 @@ with st.container(border=False):
     doc = process_text(input_text, st.session_state.current_model)
     ent_html = render_entities(doc, st.session_state.selected_options)
     st.markdown(ent_html, unsafe_allow_html=True)
+    if not doc.ents:
+      st.warning('No entities found in the input text.', icon='⚠️')
+    if not st.session_state.selected_options:
+      st.warning('No entity labels selected to display.', icon='⚠️')
 
 # Table of entities
 st.header('Extracted entities')
@@ -107,6 +112,8 @@ if not input_text.strip():
   st.error('Named entities cannot be extracted from empty text!', icon='❌')
 elif not doc.ents:
   st.warning('No entities found in the input text.', icon='⚠️')
+elif not st.session_state.selected_options:
+  st.warning('No entity labels selected to display.', icon='⚠️')
 else:
   # Create a dataframe of entities
   for ent in doc.ents:

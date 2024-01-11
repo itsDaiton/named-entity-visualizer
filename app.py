@@ -101,7 +101,7 @@ with st.container(border=False):
     st.markdown(ent_html, unsafe_allow_html=True)
     if not doc.ents:
       st.warning('No entities found in the input text.', icon='⚠️')
-    if not st.session_state.selected_options:
+    elif not st.session_state.selected_options:
       st.warning('No entity labels selected to display.', icon='⚠️')
 
 # Table of entities
@@ -115,44 +115,49 @@ elif not doc.ents:
 elif not st.session_state.selected_options:
   st.warning('No entity labels selected to display.', icon='⚠️')
 else:
-  # Create a dataframe of entities
-  for ent in doc.ents:
-    if ent.label_ in st.session_state.selected_options:
-      structure = {
-        'Entity': ent.text,
-        'Label': ent.label_,
-        'ID': ent._.kb_qid if hasattr(ent._, 'kb_qid') else 'NaN',
-        'Wikidata URL': ent._.url_wikidata if hasattr(ent._, 'url_wikidata') else 'NaN'
-      }
-      table_data.append(structure)
-  df = pd.DataFrame(table_data)
+  input_entity_labels = [ent.label_ for ent in doc.ents]
+  # Check if any selected entity labels match the ones found in the input text
+  if not any(label in input_entity_labels for label in st.session_state.selected_options):
+    st.warning('No entity labels match the ones found in the input text.', icon='⚠️')
+  else:
+    # Create a dataframe of entities
+    for ent in doc.ents:
+      if ent.label_ in st.session_state.selected_options:
+        structure = {
+          'Entity': ent.text,
+          'Label': ent.label_,
+          'ID': ent._.kb_qid if hasattr(ent._, 'kb_qid') else 'NaN',
+          'Wikidata URL': ent._.url_wikidata if hasattr(ent._, 'url_wikidata') else 'NaN'
+        }
+        table_data.append(structure)
+    df = pd.DataFrame(table_data)
 
-  # Container for table
-  with st.container(border=False):
-    st.data_editor(
-      df,
-      column_config={
-        'Wikidata URL': st.column_config.LinkColumn(),
-      },
-      hide_index=True,
-      use_container_width=True,
-    )
+    # Container for table
+    with st.container(border=False):
+      st.data_editor(
+        df,
+        column_config={
+          'Wikidata URL': st.column_config.LinkColumn(),
+        },
+        hide_index=True,
+        use_container_width=True,
+      )
 
-  # Get unique labels and their colors  
-  unique_labels = df['Label'].unique()
-  label_colors = [get_entity_colors().get(label, 'gray') for label in unique_labels]
-  label_dict = dict(zip(unique_labels, label_colors))
+    # Get unique labels and their colors  
+    unique_labels = df['Label'].unique()
+    label_colors = [get_entity_colors().get(label, 'gray') for label in unique_labels]
+    label_dict = dict(zip(unique_labels, label_colors))
 
-  # Entity label distribution graph
-  st.header('Entity Label Distribution')
-  with st.container(border=False):
-    fig, ax = plt.subplots()
-    counts = df['Label'].value_counts()
-    # Plot all entity labels and their counts
-    counts.plot(kind='bar', color=[label_dict[label] for label in counts.index])
-    ax.set_xlabel('Entity Label')
-    ax.set_ylabel('Count')
-    plt.xticks(rotation=45, ha='right')
-    # Set y-axis ticks to natural numbers
-    ax.set_yticks(range(int(counts.max()) + 1))
-    st.pyplot(fig)
+    # Entity label distribution graph
+    st.header('Entity Label Distribution')
+    with st.container(border=False):
+      fig, ax = plt.subplots()
+      counts = df['Label'].value_counts()
+      # Plot all entity labels and their counts
+      counts.plot(kind='bar', color=[label_dict[label] for label in counts.index])
+      ax.set_xlabel('Entity Label')
+      ax.set_ylabel('Count')
+      plt.xticks(rotation=45, ha='right')
+      # Set y-axis ticks to natural numbers
+      ax.set_yticks(range(int(counts.max()) + 1))
+      st.pyplot(fig)

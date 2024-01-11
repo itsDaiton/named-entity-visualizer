@@ -42,3 +42,27 @@ def get_entity_colors():
     'PER': 'Peru',
     'MISC': 'Aqua',
   }
+  
+def get_entity_label_examples():
+  return {
+    'CARDINAL': '3.14 - https://www.wikidata.org/wiki/Q167',
+    'DATE': 'Christmas Eve - https://www.wikidata.org/wiki/Q106010',
+    'EVENT': 'Olympics - https://www.wikidata.org/wiki/Q5389',
+    'FAC': 'Golden Gate Bridge - https://www.wikidata.org/wiki/Q44440',
+    'GPE': 'Prague - https://www.wikidata.org/wiki/Q1085',
+    'LANGUAGE': 'English - https://www.wikidata.org/wiki/Q1860',
+    'LAW': 'Consitution - https://www.wikidata.org/wiki/Q11698',
+    'LOC': 'Atlantic Ocean - https://www.wikidata.org/wiki/Q97',
+    'MONEY': '60,000 - https://www.wikidata.org/wiki/Q3271915',
+    'NORP': 'Czech - https://www.wikidata.org/wiki/Q170217',
+    'ORDINAL': '**very high ambiguity - hard to link against Wikidata**',
+    'ORG': 'Google - https://www.wikidata.org/wiki/Q95',
+    'PERCENT': '**very high ambiguity - hard to link against Wikidata**',
+    'PERSON': 'Sam Altman - https://www.wikidata.org/wiki/Q7407093',
+    'PRODUCT': 'Twitter - https://www.wikidata.org/wiki/Q918',
+    'QUANTITY': '**very high ambiguity - hard to link against Wikidata**',
+    'TIME': '**very high ambiguity - hard to link against Wikidata**',
+    'WORK_OF_ART': 'The Great Gatsby - https://www.wikidata.org/wiki/Q214371',
+    'PER': 'Albert Einstein - https://www.wikidata.org/wiki/Q937',
+    'MISC': 'Reyes - https://www.wikidata.org/wiki/Q16236481',
+  }

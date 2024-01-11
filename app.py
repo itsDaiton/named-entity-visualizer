@@ -2,7 +2,7 @@ import streamlit as st
 import spacy
 import pandas as pd
 import matplotlib.pyplot as plt
-from processing import process_text, render_entities, get_default_input, get_entity_colors
+from processing import process_text, render_entities, get_default_input, get_entity_colors, get_entity_label_examples
 
 # Load models only when necessary - https://docs.streamlit.io/library/advanced-features/caching
 @st.cache_resource
@@ -66,6 +66,13 @@ st.sidebar.markdown(model_info, unsafe_allow_html=True)
 st.sidebar.title('Named Entity Labels')
 container = st.sidebar.container()
 all = st.sidebar.toggle('Select all labels', value=True)
+
+# Label Scheme Explanation
+st.sidebar.title('Model Label Scheme Explanation')
+with st.sidebar.expander('See explanation and examples', expanded=False):
+  for label in entity_labels[st.session_state.current_model]:
+    st.markdown(f'**{label}** - {spacy.explain(label)}')
+    st.markdown(f'- *{get_entity_label_examples().get(label, "No example available.")}*')
 
 # Select all entities by default, else select only the ones that are already selected
 if all:

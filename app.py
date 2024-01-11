@@ -13,7 +13,7 @@ def load_model(model):
 model_en = load_model('en_core_web_sm')
 model_fr = load_model('fr_core_news_sm')
 model_de = load_model('de_core_news_sm')
-model_pl = load_model('pl_core_news_sm')
+model_nl = load_model('nl_core_news_sm')
 model_es = load_model('es_core_news_sm')
 
 # Load entity labels and their colors - https://spacy.io/api/language#get_pipe
@@ -21,7 +21,7 @@ entity_labels = {
     'en_core_web_sm': model_en.get_pipe('ner').labels,
     'fr_core_news_sm': model_fr.get_pipe('ner').labels,
     'de_core_news_sm': model_de.get_pipe('ner').labels,
-    'pl_core_news_sm': model_pl.get_pipe('ner').labels,
+    'nl_core_news_sm': model_nl.get_pipe('ner').labels,
     'es_core_news_sm': model_es.get_pipe('ner').labels,
 }
 
@@ -48,7 +48,7 @@ model_options = {
   'en_core_web_sm': model_en, 
   'fr_core_news_sm': model_fr, 
   'de_core_news_sm': model_de,
-  'pl_core_news_sm': model_pl,
+  'nl_core_news_sm': model_nl,
   'es_core_news_sm': model_es,
   }
 st.session_state.current_model = st.sidebar.selectbox('Select a model', model_options.keys())

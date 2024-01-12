@@ -37,11 +37,11 @@ if 'selected_options' not in st.session_state:
     st.session_state.selected_options = entity_labels[st.session_state.current_model]
 
 # Sidebar title
-title = '<p style="color: Indigo; font-size: 54px; font-family: Segoe UI;">NERV</p>'
+title = '<p style="color: Indigo; font-size: 54px; font-family: Segoe UI;">NEV</p>'
 st.sidebar.markdown(title, unsafe_allow_html=True)
 
 # Sidebar description
-description = '<p style="font-size: 18px">NERV short for <span style="color: Indigo; font-weight: bold;">Named Entity Recognition Visualizer</span> is a tool to visualize entities found in a input text. Entities are extracted from <span style="color: Indigo; font-weight: bold;">Wikidata</span> knowledge graph using pre-trained models with NLP pipelines.</p>'
+description = '<p style="font-size: 18px">NEV short for <span style="color: Indigo; font-weight: bold;">Named Entity Visualizer</span> is a tool to visualize entities found in unstructured text. Entities are extracted from input text using  <span style="color: Indigo; font-weight: bold;">Named Entity Recognition (NER)</span> and then linked to concepts on  <span style="color: Indigo; font-weight: bold;">Wikidata</span> knowledge graph using <span style="color: Indigo; font-weight: bold;">Named Entity Linking (NEL)</span>. This process is executed using a pre-trained model with NLP pipeline.</p>'
 st.sidebar.markdown(description, unsafe_allow_html=True)
 
 # Sidebar model selection
@@ -98,7 +98,7 @@ if not input_text.strip():
   st.warning('Please enter some text to analyze.', icon="⚠️")
 
 # Named Entities - https://spacy.io/usage/visualizers
-st.header('Named Entities Visualization')
+st.header('Named Entity Recognition')
 with st.container(border=False):
   if not input_text.strip():
     st.error('Named entities cannot be extracted from empty text!', icon='❌')
@@ -112,7 +112,7 @@ with st.container(border=False):
       st.warning('No entity labels selected to display.', icon='⚠️')
 
 # Table of entities
-st.header('Extracted entities')
+st.header('Named Entity Linking')
 table_data = []
 
 if not input_text.strip():

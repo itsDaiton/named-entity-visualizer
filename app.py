@@ -16,7 +16,7 @@ model_de = load_model('de_core_news_sm')
 model_nl = load_model('nl_core_news_sm')
 model_es = load_model('es_core_news_sm')
 
-# Load entity labels and their colors - https://spacy.io/api/language#get_pipe
+# Load entity labels - https://spacy.io/api/language#get_pipe
 entity_labels = {
     'en_core_web_sm': model_en.get_pipe('ner').labels,
     'fr_core_news_sm': model_fr.get_pipe('ner').labels,
@@ -32,7 +32,7 @@ entity_colors = get_entity_colors()
 if 'current_model' not in st.session_state:
     st.session_state.current_model = 'en_core_web_sm'
     
-# Set default entities to session state - https://docs.streamlit.io/library/api-reference/session-state
+# Set default entity labels to session state - https://docs.streamlit.io/library/api-reference/session-state
 if 'selected_options' not in st.session_state:
     st.session_state.selected_options = entity_labels[st.session_state.current_model]
 

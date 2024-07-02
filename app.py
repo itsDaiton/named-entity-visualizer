@@ -4,6 +4,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from processing import process_text, render_entities, get_default_input, get_entity_colors, get_entity_label_examples
 
+# Page configuration - https://docs.streamlit.io/library/api-reference/config 
+st.set_page_config(
+  page_title='Named Entity Visualizer',
+  page_icon='🔍',
+)
+
 # Load models only when necessary - https://docs.streamlit.io/library/advanced-features/caching
 @st.cache_resource
 def load_model(model):

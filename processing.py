@@ -9,7 +9,12 @@ def get_default_input():
 # Process input text with selected model and its NLP pipeline
 def process_text(input_text, model):
   nlp = spacy.load(model)
-  nlp.add_pipe("entityfishing")
+  nlp.add_pipe(
+    "entityfishing",
+    config={
+      "api_ef_base": "http://nerd.huma-num.fr/nerd/service"
+    }
+    )
   doc = nlp(input_text)
   return doc
 
